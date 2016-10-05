@@ -1,0 +1,8 @@
+---
+# handlers for firebird 
+
+- name: restart firebird
+  service: 
+   name: firebird-superserver
+   state: restarted
+

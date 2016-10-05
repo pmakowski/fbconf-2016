@@ -1,0 +1,21 @@
+---
+# This will setup SYSDBA password
+#
+
+- name: create sql script
+  copy:
+    src: sysdba.sql
+    dest: /tmp/sysdba.sql
+    owner: root
+    group: root
+    mode: 500
+
+    
+- name: change sysdba password
+  shell: "/usr/bin/isql-fb -m -m2 -user SYSDBA -i /tmp/sysdba.sql -o /tmp/sysdba.log employee"
+
+- name: remove sql script
+  file:
+    path : /tmp/sysdba.sql
+    state: absent
+

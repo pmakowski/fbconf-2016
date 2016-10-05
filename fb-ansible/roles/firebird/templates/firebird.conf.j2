@@ -1,0 +1,6 @@
+# {{ ansible_managed }}
+
+DatabaseAccess = {{ DatabaseAccess | default('/var/lib/firebird/data')}}
+
+ServerMode = {{ ServerMode | default('Super')}}
+

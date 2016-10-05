@@ -1,0 +1,86 @@
+Le script a débuté sur mer. 05 oct. 2016 18:00:51 CEST
+]0;philippe@druss:~/fb-ansible]7;file://druss.foix.espelida.com/home/philippe/fb-ansible[01;32mphilippe@druss[00m [01;34mfb-ansible[00m$ cat /etc/fi
+filesystems  firebird/    
+[01;32mphilippe@druss[00m [01;34mfb-ansible[00m$ cat /etc/firebird/fi
+firebird.conf                       firebird.conf.2016-10-05@17:56:09~  firebird.conf.2016-10-05@17:59:55~  firebird.conf.rpmsave
+[01;32mphilippe@druss[00m [01;34mfb-ansible[00m$ cat /etc/firebird/firebird.conf
+# Ansible managed: /home/philippe/fb-ansible/roles/firebird/templates/firebird.conf.j2 modified on 2016-10-05 15:59:06 by philippe on druss.foix.espelida.com
+
+DatabaseAccess = /var/lib/firebird/data
+
+ServerMode = Super
+
+]0;philippe@druss:~/fb-ansible]7;file://druss.foix.espelida.com/home/philippe/fb-ansible[01;32mphilippe@druss[00m [01;34mfb-ansible[00m$ cat /etc/firebird/firebird.conf[K[K[K[K[K[K[K[K[K[K[K[K[Kd
+databases.conf          databases.conf.rpmsave  
+[01;32mphilippe@druss[00m [01;34mfb-ansible[00m$ cat /etc/firebird/databases.conf
+# ------------------------------
+# List of known databases
+# ------------------------------
+
+#
+# Makes it possible to specify per-database configuration parameters.
+# See the list of them and description on file firebird.conf.
+# To place that parameters in this file add them in curly braces
+# after "alias = /path/to/database.fdb" line. Example:
+#	big = /databases/bigdb.fdb
+#	{
+#		LockMemSize = 32M		# We know that bigdb needs a lot of locks
+#		LockHashSlots = 19927	#	and big enough hash table for them
+#	}
+#
+
+#
+# Example Database:
+#
+employee.fdb = $(dir_sampleDb)/employee.fdb
+employee = $(dir_sampleDb)/employee.fdb
+
+#
+# Master security database specific setup.
+# Do not remove it until you understand well what are you doing!
+#
+security.db = $(dir_secDb)/security3.fdb
+{
+	RemoteAccess = false
+	DefaultDbCachePages = 50
+}
+
+#
+# Live Databases:
+#
+test = /var/lib/firebird/data/test.fdb
+]0;philippe@druss:~/fb-ansible]7;file://druss.foix.espelida.com/home/philippe/fb-ansible[01;32mphilippe@druss[00m [01;34mfb-ansible[00m$ ansible-playbook -i hosts.ini -b -K firebird-example.yml 
+SUDO password: 
+
+PLAY [firebird-master] *********************************************************
+
+TASK [setup] *******************************************************************
+[0;32mok: [firebird-master][0m
+
+TASK [firebird : install firebird] *********************************************
+[0;32mok: [firebird-master][0m
+
+TASK [firebird : setup firebird.conf] ******************************************
+[0;32mok: [firebird-master][0m
+
+TASK [firebird : create sql script] ********************************************
+[0;33mchanged: [firebird-master][0m
+
+TASK [firebird : change sysdba password] ***************************************
+[0;33mchanged: [firebird-master][0m
+
+TASK [firebird : remove sql script] ********************************************
+[0;33mchanged: [firebird-master][0m
+
+TASK [firebird : start firebird] ***********************************************
+[0;32mok: [firebird-master][0m
+
+TASK [firebird : create test database alias] ***********************************
+[0;32mok: [firebird-master][0m
+
+PLAY RECAP *********************************************************************
+[0;33mfirebird-master[0m            : [0;32mok[0m[0;32m=[0m[0;32m8[0m    [0;33mchanged[0m[0;33m=[0m[0;33m3[0m    unreachable=0    failed=0   
+
+]0;philippe@druss:~/fb-ansible]7;file://druss.foix.espelida.com/home/philippe/fb-ansible[01;32mphilippe@druss[00m [01;34mfb-ansible[00m$ exit
+
+Script terminé sur mer. 05 oct. 2016 18:01:46 CEST

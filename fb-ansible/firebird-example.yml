@@ -1,0 +1,6 @@
+---
+# Playbook example for Firebird
+
+- hosts: firebird-master
+  roles:
+   - firebird

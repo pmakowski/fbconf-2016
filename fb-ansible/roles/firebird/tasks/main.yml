@@ -1,0 +1,38 @@
+---
+# This will install Firebird
+#
+
+- name: install firebird
+  urpmi: 
+    pkg: firebird,firebird-utils,firebird-examples
+    state: present
+
+
+- name: setup firebird.conf
+  template:
+     backup: yes
+     dest: /etc/firebird/firebird.conf
+     group: firebird
+     owner: firebird
+     mode: 0644
+     src: firebird.conf.j2
+
+- include: sysdba-pass.yml
+
+
+- name: start firebird
+  service: 
+   name: firebird-superserver
+   state: started
+   enabled: yes
+ 
+   
+- name: create test database alias
+  lineinfile: 
+   dest: /etc/firebird/databases.conf
+   line: "test = /var/lib/firebird/data/test.fdb"
+   state: present
+  notify:
+   - restart firebird
+   
+
